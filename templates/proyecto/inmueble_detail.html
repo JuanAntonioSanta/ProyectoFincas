@@ -1,0 +1,57 @@
+{% extends 'proyecto/base.html' %}
+
+{% block title %}Detalle de Inmueble - {{ inmueble.identificador }}{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow-sm mx-auto" style="max-width: 600px;">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h3 class="mb-0">Inmueble: {{ inmueble.identificador }}</h3>
+            {% if user.is_authenticated and user.is_administrador %}
+                <div>
+                    <a href="{% url 'inmueble_update' inmueble.pk %}" class="btn btn-warning btn-sm me-2">Editar</a>
+                    <a href="{% url 'inmueble_delete' inmueble.pk %}" class="btn btn-danger btn-sm">Eliminar</a>
+                </div>
+            {% endif %}
+        </div>
+        <div class="card-body">
+            <p><strong>Tipo:</strong> {{ inmueble.get_tipo_display }}</p>
+            
+            {# Dirección ahora concatenada de la comunidad y el identificador del inmueble #}
+            {% if inmueble.comunidad %}
+                <p><strong>Dirección:</strong> {{ inmueble.comunidad.direccion }} ({{ inmueble.identificador }})</p>
+            {% else %}
+                <p><strong>Dirección:</strong> {{ inmueble.identificador }} (Comunidad no asignada)</p>
+            {% endif %}
+            
+            <p>
+                <strong>Comunidad:</strong> 
+                {% if inmueble.comunidad %}
+                    <a href="{% url 'comunidad_detail' inmueble.comunidad.pk %}">{{ inmueble.comunidad.nombre }}</a>
+                {% else %}
+                    Ninguna asignada
+                {% endif %}
+            </p>
+            {# Ciudad y Código Postal obtenidos de la comunidad #}
+            {% if inmueble.comunidad %}
+                <p><strong>Ciudad (de la Comunidad):</strong> {{ inmueble.comunidad.ciudad }}</p>
+                <p><strong>Código Postal (de la Comunidad):</strong> {{ inmueble.comunidad.codigo_postal }}</p>
+            {% else %}
+                <p class="text-muted">Ciudad y Código Postal no disponibles (inmueble sin comunidad asignada).</p>
+            {% endif %}
+            
+            <p>
+                <strong>Propietarios:</strong> 
+                {% for propietario in inmueble.propietarios.all %}
+                    {{ propietario.nombre }}{% if not forloop.last %}, {% endif %}
+                {% empty %}
+                    Ninguno asignado
+                {% endfor %}
+            </p>
+        </div>
+        <div class="card-footer d-flex justify-content-end">
+            <a href="{% url 'inmueble_list' %}" class="btn btn-secondary btn-sm">Volver al listado</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

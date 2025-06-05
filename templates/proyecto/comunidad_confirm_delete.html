@@ -1,0 +1,25 @@
+{% extends 'proyecto/base.html' %}
+
+{% block title %}Confirmar Eliminación - {{ comunidad.nombre }}{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow-sm mx-auto" style="max-width: 500px;">
+        <div class="card-header bg-danger text-white">
+            <h3 class="mb-0">Confirmar Eliminación de Comunidad</h3>
+        </div>
+        <div class="card-body">
+            <p class="lead text-center">¿Estás seguro de que deseas eliminar la comunidad:</p>
+            <h4 class="text-center text-danger mb-4">"{{ comunidad.nombre }}"</h4>
+            <p class="text-center">Esta acción es irreversible.</p>
+        </div>
+        <div class="card-footer d-flex justify-content-center">
+            <form method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger me-2">Sí, eliminar</button>
+                <a href="{% url 'comunidad_detail' comunidad.pk %}" class="btn btn-secondary">Cancelar</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

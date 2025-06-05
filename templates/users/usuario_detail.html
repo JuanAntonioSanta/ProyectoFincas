@@ -1,0 +1,34 @@
+{% extends 'proyecto/base.html' %}
+
+{% block title %}Detalle de Usuario - {{ usuario.nombre }}{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow-sm mx-auto" style="max-width: 600px;">
+        <div class="card-header bg-primary text-white"> {# Eliminamos d-flex justify-content-between align-items-center y el div de botones #}
+            <h3 class="mb-0">Detalle de Usuario: {{ usuario.nombre }}</h3>
+        </div>
+        <div class="card-body">
+            <p><strong>Email:</strong> {{ usuario.email }}</p>
+            <p><strong>Tipo de Usuario:</strong> {{ usuario.get_tipo_usuario_display }}</p>
+            <p>
+                <strong>Activo:</strong> 
+                {% if usuario.is_active %}
+                    <span class="badge bg-success">Sí</span>
+                {% else %}
+                    <span class="badge bg-danger">No</span>
+                {% endif %}
+            </p>
+            <p><strong>Teléfono:</strong> {{ usuario.telefono | default:"N/A" }}</p>
+        </div>
+        <div class="card-footer d-flex justify-content-end gap-2"> {# Añadimos gap-2 para espaciado entre botones #}
+            {# Botones de acción movidos aquí #}
+            {% if user.is_authenticated and user.is_administrador %}
+                <a href="{% url 'usuario_update' usuario.pk %}" class="btn btn-warning">Editar</a> {# Eliminamos btn-sm y me-2 para hacerlos un poco más grandes y sin margen extra #}
+                <a href="{% url 'usuario_delete' usuario.pk %}" class="btn btn-danger">Eliminar</a> {# Eliminamos btn-sm #}
+            {% endif %}
+            <a href="{% url 'usuario_list' %}" class="btn btn-secondary">Volver al listado</a> {# Eliminamos btn-sm #}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,62 @@
+{% extends "proyecto/base.html" %}
+
+{% block title %}Listado de Usuarios - Administrador de Fincas{% endblock %}
+
+{% block content %}
+    <div class="container mt-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="mb-0">Listado de Usuarios</h2>
+            {% if user.is_authenticated and user.is_administrador %}
+                <a href="{% url 'usuario_create' %}" class="btn btn-primary">
+                    Crear Nuevo Usuario
+                </a>
+            {% endif %}
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead class="bg-primary text-white">
+                    <tr>
+                        <th scope="col">Nombre Completo</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Tipo de Usuario</th>
+                        <th scope="col">Activo</th>
+                        {# ELIMINADA: <th scope="col">Fecha de Registro</th> #}
+                        <th scope="col">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for usuario in usuarios %}
+                    <tr>
+                        <td>{{ usuario.nombre }}</td>
+                        <td>{{ usuario.email }}</td>
+                        <td>{{ usuario.get_tipo_usuario_display }}</td>
+                        <td>
+                            {% if usuario.is_active %}
+                                <span class="badge bg-success">Sí</span>
+                            {% else %}
+                                <span class="badge bg-danger">No</span>
+                            {% endif %}
+                        </td>
+                        {# ELIMINADA: <td>{{ usuario.date_joined|date:"d M Y H:i" }}</td> #}
+                        <td>
+                            {% if user.is_authenticated and user.is_administrador %}
+                                <a href="{% url 'usuario_detail' usuario.pk %}" class="btn btn-info btn-sm">Ver</a>
+                                <a href="{% url 'usuario_update' usuario.pk %}" class="btn btn-warning btn-sm">Editar</a>
+                                <a href="{% url 'usuario_delete' usuario.pk %}" class="btn btn-danger btn-sm">Eliminar</a>
+                            {% else %}
+                                No autorizado
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        {# COLSPAN AJUSTADO: Ahora es 5 (Nombre, Email, Tipo, Activo, Acciones) #}
+                        <td colspan="5" class="text-center">No hay usuarios registrados aún.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

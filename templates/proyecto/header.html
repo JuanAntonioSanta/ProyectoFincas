@@ -1,0 +1,43 @@
+<div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'home' %}">AdminFincas</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link fs-5" href="{% url 'comunidad_list' %}">Comunidades</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fs-5" href="{% url 'inmueble_list' %}">Inmuebles</a>
+                    </li>
+                    {% if user.is_administrador %}
+                    <li class="nav-item">
+                        <a class="nav-link fs-5" href="{% url 'usuario_list' %}">Clientes</a>
+                    </li>
+                    {% endif %}
+                    {% endif %}
+                    
+                </ul>
+                <div class="">
+                    <ul class="navbar-nav">
+                        {% if user.is_authenticated %}
+                            <div class="d-flex align-items-center ms-auto">
+                                <span class="me-3 fw-semibold fs-5">Hola {{ user.nombre }}</span>
+                                <form method="post" action="{% url 'logout' %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger">Cerrar sesión</button>
+                                </form>
+                            </div>
+                        {% else %}
+                            <div class="d-flex align-items-center ms-auto">
+                                <a class="btn btn-light btn-outline-primary me-2" href="{% url 'login' %}">Iniciar sesión</a>
+                                <a class="btn btn-dark btn-outline-success" href="{% url 'register' %}">Registrarse</a>
+                            </div>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>

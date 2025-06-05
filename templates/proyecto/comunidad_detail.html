@@ -1,0 +1,64 @@
+{% extends 'proyecto/base.html' %}
+
+{% block title %}{{ comunidad.nombre }} - Detalle de Comunidad{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow-sm mx-auto" style="max-width: 600px;">
+        <div class="card-header bg-primary text-white">
+            <h3 class="mb-0">{{ comunidad.nombre }}</h3>
+        </div>
+        <div class="card-body">
+            <p><strong>Dirección:</strong> {{ comunidad.direccion }}</p>
+            <p><strong>Ciudad:</strong> {{ comunidad.ciudad }}</p>
+            <p><strong>Código Postal:</strong> {{ comunidad.codigo_postal }}</p>
+            <p>
+                <strong>Administradores:</strong> 
+                {% for admin in comunidad.administradores.all %}
+                    {{ admin.nombre }}{% if not forloop.last %}, {% endif %}
+                {% empty %}
+                    Ninguno asignado
+                {% endfor %}
+            </p>
+
+            <h4 class="mt-4 mb-3">Inmuebles Asignados:</h4>
+            {% if comunidad.inmuebles.all %}
+                <ul class="list-group">
+                    {% for inmueble in comunidad.inmuebles.all %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                {# Muestra el identificador del inmueble, que incluye dirección y número #}
+                                <strong>{{ inmueble }}</strong> 
+                                <br>
+                                <small class="text-muted">
+                                    Propietarios: 
+                                    {% for propietario in inmueble.propietarios.all %} {# Itera sobre los propietarios #}
+                                        {{ propietario.nombre }}{% if not forloop.last %}, {% endif %}
+                                    {% empty %}
+                                        N/A
+                                    {% endfor %}
+                                </small>
+                            </div>
+                            {% if user.is_authenticated and user.is_administrador %}
+                                <div>
+                                    <a href="{% url 'inmueble_detail' inmueble.pk %}" class="btn btn-info btn-sm me-2">Ver</a>
+                                    <a href="{% url 'inmueble_update' inmueble.pk %}" class="btn btn-warning btn-sm">Editar</a>
+                                </div>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="text-muted">No hay inmuebles asignados a esta comunidad.</p>
+            {% endif %}
+        </div>
+        <div class="card-footer d-flex justify-content-end">
+            {% if user.is_authenticated and user.is_administrador %}
+                <a href="{% url 'comunidad_update' comunidad.pk %}" class="btn btn-warning btn-sm me-2">Editar</a>
+                <a href="{% url 'comunidad_delete' comunidad.pk %}" class="btn btn-danger btn-sm me-2">Eliminar</a>
+            {% endif %}
+            <a href="{% url 'comunidad_list' %}" class="btn btn-secondary btn-sm">Volver al listado</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

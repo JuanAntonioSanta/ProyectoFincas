@@ -1,0 +1,44 @@
+# Directorios de Python
+__pycache__/
+*.pyc
+*.pyd
+*.pyo
+.Python/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Entornos virtuales
+venv/
+env/
+*.env
+.venv/
+bin/
+include/
+lib/
+local/
+
+# Archivos específicos de Django
+*.log
+*.pot
+*.mo
+*.sqlite3 # ¡Importante! No subas la base de datos local
+media/   # Si tienes archivos media subidos por usuarios
+
+# Archivos de configuración y claves sensibles (¡MUY IMPORTANTE!)
+.env # Si usas python-dotenv para variables de entorno locales
+*.json # Si tienes archivos JSON con claves o credenciales
+settings_local.py # Si tienes una configuración local separada

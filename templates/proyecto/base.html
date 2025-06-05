@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Administrador de Fincas{% endblock %}</title>
+    <!-- Bootstrap Minty Theme -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.3/dist/minty/bootstrap.min.css">
+
+</head>
+<body class="d-flex flex-column min-vh-100">
+    <!-- Navbar -->
+     
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        {% block header %}
+            {% include "proyecto/header.html" %}
+        {% endblock header %} 
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mt-4 main-content">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <!-- Footer -->
+    {% block footer %}
+        {% include "proyecto/footer.html" %}
+    {% endblock footer %}
+
+    <!-- Bootstrap JS (opcional, para funcionalidades como el navbar colapsable) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
